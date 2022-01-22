@@ -1,3 +1,4 @@
+from unicodedata import category
 import scrapy
 from news.items import NewsItem
 from datetime import datetime
@@ -5,7 +6,7 @@ from datetime import datetime
 CATEGORIES = {
     'thoi-su': 'Thời sự',
     'the-gioi': 'Thế giới',
-    'kinh-doanh': 'Kinh doanh',
+    'kinh-doanh': 'Kinh tế',
     'giai-tri': 'Giải trí',
     'the-thao': 'Thể thao',
     'phap-luat': 'Pháp luật',
@@ -35,29 +36,29 @@ class VnexpressSpider(scrapy.Spider):
 
     def parse(self, response):
         
-        list_news = response.css('.item-news')
+        list_news = response.css('.item-news.item-news-common')
         for news in list_news:
+            if news.css('h3 a::text').extract_first() == None:
+                continue
 
             detail_link = news.css('h3 a::attr(href)').extract_first()
             if detail_link == None: continue
 
-            item = NewsItem()
+            thumbnail = news.css('img::attr(data-src)').extract_first()
+            if thumbnail == None:
+                thumbnail = news.css('img::attr(src)').extract_first()
+            category = CATEGORIES[response.url.split('/')[3]]
 
-            item['title'] = news.css('h3 a::text').extract_first().strip('\n')
-            item['link'] = news.css('h3 a::attr(href)').extract_first()
-            item['thumbnail'] = news.css('img::attr(src)').extract_first()
-            item['sapo'] = news.css('.description a::text').extract_first().strip('\n')
-            item['category'] = CATEGORIES[response.url.split('/')[3]]
-            item['source'] = self.allowed_domains[0]
-            yield response.follow(detail_link, self.parse_detail)
-            item['release_time'] = self.date
-            yield item
+            yield response.follow(detail_link, self.parse_detail, meta={'thumbnail': thumbnail, 'link': detail_link, 'category': category})
 
         # follow all pagination links
         # pagination_links = response.css('.next-page::attr(href)')
         # yield from response.follow_all(pagination_links, self.parse)
 
     def parse_detail(self, response):
+        def extract_with_css(query):
+            return response.css(query).get(default='').strip()
+
         metaDate = response.css('.header-content .date::text').re(
             r'([0-9]{,2}\/[0-9]{,2}\/[0-9]{4}, [0-9]{,2}:[0-9]{,2})')
         if len(metaDate) > 0:
@@ -65,4 +66,14 @@ class VnexpressSpider(scrapy.Spider):
         else:
             date = ''
 
-        self.date = date
+        item = NewsItem()
+
+        item['title'] = extract_with_css('.title-detail::text')
+        item['link'] = response.meta.get('link')
+        item['thumbnail'] = response.meta.get('thumbnail')
+        item['sapo'] = extract_with_css('.description::text')
+        item['category'] = response.meta.get('category')
+        item['source'] = response.url.split("/")[2]
+        item['release_time'] = date
+
+        yield item
