@@ -1,4 +1,3 @@
-from unicodedata import category
 import scrapy
 from news.items import NewsItem
 from datetime import datetime
@@ -49,7 +48,7 @@ class VnexpressSpider(scrapy.Spider):
                 thumbnail = news.css('img::attr(src)').extract_first()
             category = CATEGORIES[response.url.split('/')[3]]
 
-            yield response.follow(detail_link, self.parse_detail, meta={'thumbnail': thumbnail, 'link': detail_link, 'category': category})
+            yield response.follow(detail_link, self.parse_detail, meta={'thumbnail': thumbnail, 'category': category})
 
         # follow all pagination links
         # pagination_links = response.css('.next-page::attr(href)')
@@ -69,7 +68,7 @@ class VnexpressSpider(scrapy.Spider):
         item = NewsItem()
 
         item['title'] = extract_with_css('.title-detail::text')
-        item['link'] = response.meta.get('link')
+        item['link'] = response.url
         item['thumbnail'] = response.meta.get('thumbnail')
         item['sapo'] = extract_with_css('.description::text')
         item['category'] = response.meta.get('category')
