@@ -1,6 +1,6 @@
 import scrapy
 from news.items import NewsItem
-import dateparser
+from datetime import datetime
 
 CATEGORIES = {
     'the-gioi': 'Thế giới',
@@ -41,6 +41,11 @@ class NguoilambaoSpider(scrapy.Spider):
             'meta[property="og:title"]').re(r'content="(.*)"')
         metaDesc = response.css(
             'meta[name="description"]').re(r'content="(.*)"')
+        metaDate = response.css('.info::text').get().strip()
+        if len(metaDate) > 0:
+            date = datetime.strptime(metaDate, '%d/%m/%Y, %H:%M')
+        else:
+            date = ''
 
         item = NewsItem()
 
@@ -52,6 +57,6 @@ class NguoilambaoSpider(scrapy.Spider):
         item['sapo'] = metaDesc[0] if len(metaDesc) > 0 else ''
         item['category'] = response.meta.get('category')
         item['source'] = response.url.split("/")[2]
-        item['release_time'] = dateparser.parse(response.css('.info::text').get().strip())
+        item['release_time'] = date
 
         yield item
