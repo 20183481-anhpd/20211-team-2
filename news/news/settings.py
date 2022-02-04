@@ -91,4 +91,4 @@ ITEM_PIPELINES = {'news.pipelines.MongoPipeline': 300, }
 
 MONGO_URI = 'mongodb+srv://project:20211@cluster0.bdcg1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 MONGO_DB = "myFirstDatabase"
-MONGO_COLLECTION = "article"
+MONGO_COLLECTION = "articles"
