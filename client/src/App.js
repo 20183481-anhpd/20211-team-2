@@ -5,19 +5,22 @@ import './App.css';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import NavBar from './components/NavBar/NavBar';
-import Home from './components/Home/Home';
+import { routes } from './routes/userRoutes';
 
 // Routes
-import { BrowserRouter as Router, Route, Routes, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useRoutes } from 'react-router-dom';
+import ListNews from './components/ListNews';
+import Home from './components/Home';
 
 function App() {
+  let element = useRoutes(routes);
   return (
     <Router>
       <div id="app-container">
         <Header />
         <NavBar />
         <Routes>
-          <Route exact path="/" element={<Home/>} />
+          <div>{element}</div>
         </Routes>
         <Footer />
       </div>

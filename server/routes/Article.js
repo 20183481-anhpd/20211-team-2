@@ -8,8 +8,13 @@ articleRoutes.post(
     asyncWrapper(articleController.create)
 )
 
+articleRoutes.post(
+    "/search",
+    asyncWrapper(articleController.search)
+)
+
 articleRoutes.get(
-    "/getListArticles/:amount",
+    "/getListArticles",
     asyncWrapper(articleController.getListArticles)
 )
 

@@ -6,6 +6,6 @@ const apiRoutes = express.Router();
 apiRoutes.get(
     "/", (req, res) => res.json({ api: "is-working" })
 );
-apiRoutes.use('/article', articleRoutes);
+apiRoutes.use('/articles', articleRoutes);
 
 module.exports = apiRoutes;

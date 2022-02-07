@@ -58,12 +58,38 @@ articleController.create = async (req, res, next) => {
     }
 }
 
+articleController.search = async (req, res, next) => {
+    try {
+        const {
+            query
+        } = req.body;
+
+        const results = await ArticleModel.find({
+            $or: [ { title: new RegExp(query, "i") }, { sapo: new RegExp(query, "i") } ]
+        }).sort({release_time: -1})
+
+        return res.status(httpStatus.OK).json({
+            data: results
+        })
+
+    } catch (e) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            message: e.message
+        });
+    }
+}
+
 articleController.getListArticles = async (req, res, next) => {
     try {
-        const amount = req.params.amount;
-        const listArticles = await ArticleModel.find({}).sort({release_time: -1})
+        var dateStr = new Date();
+        dateStr.setDate(dateStr.getDate() - 1);
+        dateStr.setHours(0,0,0,0);
+        //const amount = req.params.amount;
+        const listArticles = await ArticleModel.find({
+            release_time: {$gte: dateStr}
+        }).sort({release_time: -1})
         return res.status(httpStatus.OK).json({
-            data: listArticles.slice(0, amount)
+            data: listArticles.slice(0, 5)
         })
     } catch (e) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({

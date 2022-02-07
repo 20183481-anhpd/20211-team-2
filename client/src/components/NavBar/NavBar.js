@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import './NavBar.css';
 
 export default function NavBar() {
@@ -11,93 +12,93 @@ export default function NavBar() {
                         <ul>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to="/" >
                                         <span>Mới</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/thoi-su"}>
                                         <span>Thời sự</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/the-gioi"}>
                                         <span>Thế giới</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/kinh-te"}>
                                         <span>Kinh tế</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/giai-tri"}>
                                         <span>Giải trí</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/the-thao"}>
                                         <span>Thể thao</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/giao-duc"}>
                                         <span>Giáo dục</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/suc-khoe"}>
                                         <span>Sức khỏe</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/doi-song"}>
                                         <span>Đời sống</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/phap-luat"}>
                                         <span>Pháp luật</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/du-lich"}>
                                         <span>Du lịch</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/khoa-hoc"}>
                                         <span>Khoa học</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                             <li>
                                 <div>
-                                    <a href="/">
+                                    <Link to={"/category/cong-nghe"}>
                                         <span>Công nghệ</span>
-                                    </a>
+                                    </Link>
                                 </div>
                             </li>
                         </ul>
